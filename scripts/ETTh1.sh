@@ -12,7 +12,7 @@ label_len=48
 model_name=MSGNet
 
 pred_len=96
-python -u run_longExp.py \
+python -u -m debugpy --listen 59536 --wait-for-client run_longExp.py \
     --is_training 1 \
     --root_path ./dataset/ \
     --data_path ETTh1.csv \

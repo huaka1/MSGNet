@@ -110,14 +110,15 @@ class Model(nn.Module):
 
     def forward(self, x_enc, x_mark_enc, x_dec, x_mark_dec, mask=None):
         # Normalization from Non-stationary Transformer
-        means = x_enc.mean(1, keepdim=True).detach()
+        # x_enc (B, T, C)
+        means = x_enc.mean(1, keepdim=True).detach() 
         x_enc = x_enc - means
         stdev = torch.sqrt(
             torch.var(x_enc, dim=1, keepdim=True, unbiased=False) + 1e-5)
         x_enc /= stdev
 
         # embedding
-        enc_out = self.enc_embedding(x_enc, x_mark_enc)  # [B,T,C]
+        enc_out = self.enc_embedding(x_enc, x_mark_enc)  # [B,T,C] (32, 96, 32)
         # adp = self.graph(torch.arange(self.num_nodes).to(self.device))
         for i in range(self.layer):
             enc_out = self.layer_norm(self.model[i](enc_out))
