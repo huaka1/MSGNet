@@ -7,7 +7,7 @@ if [ ! -d "./logs/ETTh1" ]; then
 fi
 export CUDA_VISIBLE_DEVICES=0
 
-seq_len=96
+seq_len=336
 label_len=48
 model_name=MSGNet
 

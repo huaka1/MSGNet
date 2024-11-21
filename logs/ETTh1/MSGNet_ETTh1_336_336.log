@@ -1,0 +1,45 @@
+Args in experiment:
+Namespace(activation='gelu', batch_size=32, c_out=7, checkpoints='./checkpoints/', conv_channel=32, d_ff=64, d_layers=1, d_model=32, data='ETTh1', data_path='ETTh1.csv', dec_in=7, des='Exp', devices='0,1,2,3', distil=True, do_predict=False, dropout=0.1, e_layers=2, embed='timeF', embed_type=0, enc_in=7, factor=3, features='M', freq='h', gcn_depth=2, gcn_dropout=0.3, gpu=0, individual=False, is_training=1, itr=1, label_len=48, learning_rate=0.0001, loss='MSE', lradj='type1', model='MSGNet', model_id='ETTh1_336_336', moving_avg=25, n_heads=8, node_dim=10, num_kernels=6, num_nodes=7, num_workers=8, output_attention=False, patience=3, pred_len=336, propalpha=0.3, root_path='./dataset/', seasonal_patterns='Monthly', seq_len=336, skip_channel=32, subgraph_size=3, tanhalpha=3, target='OT', task_name='long_term_forecast', test_flop=False, top_k=3, train_epochs=10, use_amp=False, use_gpu=True, use_multi_gpu=False)
+Use GPU: cuda:0
+>>>>>>>start training : ETTh1_336_336_MSGNet_ETTh1_ftM_sl336_ll48_pl336_dm32_nh8_el2_dl1_df64_fc3_ebtimeF_dtTrue_Exp_0>>>>>>>>>>>>>>>>>>>>>>>>>>
+train 7969
+val 2545
+test 2545
+	iters: 100, epoch: 1 | loss: 0.4546268
+	speed: 0.1583s/iter; left time: 378.5660s
+	iters: 200, epoch: 1 | loss: 0.4734612
+	speed: 0.1552s/iter; left time: 355.5708s
+Epoch: 1 cost time: 39.133371353149414
+Epoch: 1, Steps: 249 | Train Loss: 0.5149098 Vali Loss: 1.3147154 Test Loss: 0.4625299
+Validation loss decreased (inf --> 1.314715).  Saving model ...
+Updating learning rate to 0.0001
+	iters: 100, epoch: 2 | loss: 0.3792276
+	speed: 0.3195s/iter; left time: 684.4202s
+	iters: 200, epoch: 2 | loss: 0.3567674
+	speed: 0.1555s/iter; left time: 317.6099s
+Epoch: 2 cost time: 39.55161380767822
+Epoch: 2, Steps: 249 | Train Loss: 0.3994397 Vali Loss: 1.3477309 Test Loss: 0.4983152
+EarlyStopping counter: 1 out of 3
+Updating learning rate to 5e-05
+	iters: 100, epoch: 3 | loss: 0.3412343
+	speed: 0.3070s/iter; left time: 581.1677s
+	iters: 200, epoch: 3 | loss: 0.3216397
+	speed: 0.1563s/iter; left time: 280.2789s
+Epoch: 3 cost time: 39.424216508865356
+Epoch: 3, Steps: 249 | Train Loss: 0.3490542 Vali Loss: 1.4023341 Test Loss: 0.5173227
+EarlyStopping counter: 2 out of 3
+Updating learning rate to 2.5e-05
+	iters: 100, epoch: 4 | loss: 0.3348126
+	speed: 0.3092s/iter; left time: 508.3029s
+	iters: 200, epoch: 4 | loss: 0.3098746
+	speed: 0.1552s/iter; left time: 239.6902s
+Epoch: 4 cost time: 39.10870599746704
+Epoch: 4, Steps: 249 | Train Loss: 0.3257118 Vali Loss: 1.4583842 Test Loss: 0.5497958
+EarlyStopping counter: 3 out of 3
+Early stopping
+>>>>>>>testing : ETTh1_336_336_MSGNet_ETTh1_ftM_sl336_ll48_pl336_dm32_nh8_el2_dl1_df64_fc3_ebtimeF_dtTrue_Exp_0<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+test 2545
+preds_shape: (79, 32, 336, 7)
+trues_shape: (79, 32, 336, 7)
+nd:0.5835989713668823, nrmse:0.849816620349884, mse:0.4625301957130432, mae:0.4670456647872925, rse:0.6475839018821716, mape:12.197964668273926
+time: 198.5215425491333

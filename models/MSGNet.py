@@ -58,8 +58,7 @@ class ScaleGraphBlock(nn.Module):
 
         #for Mul-attetion
             out = out.reshape(-1 , scale , N) #（128, 24, 32）
-            # out = self.norm(self.att0(out)) #（128, 24, 32）
-            # 去除多头注意力
+            out = self.norm(self.att0(out)) #（128, 24, 32）
             out = self.norm(out) #（128, 24, 32）
             out = self.gelu(out) #（128, 24, 32）
             out = out.reshape(B, -1 , scale , N).reshape(B ,-1 ,N) # (32, 96, 32)
