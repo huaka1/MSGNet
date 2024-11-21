@@ -12,6 +12,7 @@ label_len=48
 model_name=MSGNet
 
 pred_len=96
+# -m debugpy --listen 59536 --wait-for-client
 python -u -m debugpy --listen 59536 --wait-for-client run_longExp.py \
     --is_training 1 \
     --root_path ./dataset/ \
@@ -39,7 +40,7 @@ python -u -m debugpy --listen 59536 --wait-for-client run_longExp.py \
     --skip_channel 32 \
     --dropout 0.1 \
     --batch_size 32 \
-    --itr 1  #>logs/ETTh1/$model_name'_'ETTh1_$seq_len'_'$pred_len.log
+    --itr 1 >logs/ETTh1/$model_name'_'ETTh1_$seq_len'_'$pred_len.log
 
 
 pred_len=192
@@ -70,7 +71,7 @@ python -u run_longExp.py \
     --skip_channel 32 \
     --dropout 0.1 \
     --batch_size 32 \
-    --itr 1  #>logs/ETTh1/$model_name'_'ETTh1_$seq_len'_'$pred_len.log
+    --itr 1 >logs/ETTh1/$model_name'_'ETTh1_$seq_len'_'$pred_len.log
 
 pred_len=336
 python -u run_longExp.py \
@@ -100,7 +101,7 @@ python -u run_longExp.py \
     --skip_channel 32 \
     --dropout 0.1 \
     --batch_size 32 \
-    --itr 1 #>logs/ETTh1/$model_name'_'ETTh1_$seq_len'_'$pred_len.log
+    --itr 1 >logs/ETTh1/$model_name'_'ETTh1_$seq_len'_'$pred_len.log
 
 
 pred_len=720
@@ -131,4 +132,4 @@ python -u run_longExp.py \
     --skip_channel 32 \
     --dropout 0.1 \
     --batch_size 32 \
-    --itr 1  #>logs/ETTh1/$model_name'_'ETTh1_$seq_len'_'$pred_len.log
+    --itr 1  >logs/ETTh1/$model_name'_'ETTh1_$seq_len'_'$pred_len.log

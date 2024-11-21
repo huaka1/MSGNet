@@ -14,7 +14,7 @@ def FFT_for_Period(x, k=2):
     frequency_list = abs(xf).mean(0).mean(-1)
     frequency_list[0] = 0
     _, top_list = torch.topk(frequency_list, k)
-    top_list = top_list.detach().cpu().numpy()
+    top_list = top_list.detach().cpu().numpy() # 获取频率
     period = x.shape[1] // top_list
     return period, abs(xf).mean(-1)[:, top_list]
 
@@ -39,13 +39,13 @@ class ScaleGraphBlock(nn.Module):
 
 
     def forward(self, x):
-        B, T, N = x.size()
-        scale_list, scale_weight = FFT_for_Period(x, self.k)
+        B, T, N = x.size() # (32, 96, 32)
+        scale_list, scale_weight = FFT_for_Period(x, self.k) # [24, 96, 48] (32, 3)
         res = []
         for i in range(self.k):
             scale = scale_list[i]
             #Gconv
-            x = self.gconv[i](x)
+            x = self.gconv[i](x) # (32, 96, 32)
             # paddng
             if (self.seq_len) % scale != 0:
                 length = (((self.seq_len) // scale) + 1) * scale
@@ -53,23 +53,25 @@ class ScaleGraphBlock(nn.Module):
                 out = torch.cat([x, padding], dim=1)
             else:
                 length = self.seq_len
-                out = x
-            out = out.reshape(B, length // scale, scale, N)
+                out = x # (32, 96, 32)
+            out = out.reshape(B, length // scale, scale, N) # (32, 4, 24, 32)
 
         #for Mul-attetion
-            out = out.reshape(-1 , scale , N)
-            out = self.norm(self.att0(out))
-            out = self.gelu(out)
-            out = out.reshape(B, -1 , scale , N).reshape(B ,-1 ,N)
+            out = out.reshape(-1 , scale , N) #（128, 24, 32）
+            # out = self.norm(self.att0(out)) #（128, 24, 32）
+            # 去除多头注意力
+            out = self.norm(out) #（128, 24, 32）
+            out = self.gelu(out) #（128, 24, 32）
+            out = out.reshape(B, -1 , scale , N).reshape(B ,-1 ,N) # (32, 96, 32)
         # #for simpleVIT
         #     out = self.att(out.permute(0, 3, 1, 2).contiguous()) #return
         #     out = out.permute(0, 2, 3, 1).reshape(B, -1 ,N)
 
-            out = out[:, :self.seq_len, :]
+            out = out[:, :self.seq_len, :] # (32, 96, 32)
             res.append(out)
 
-        res = torch.stack(res, dim=-1)
-        # adaptive aggregation
+        res = torch.stack(res, dim=-1) # (32, 96, 32, 3)
+        # adaptive aggregation 对scale_weight加参数，然后加权求和
         scale_weight = F.softmax(scale_weight, dim=1)
         scale_weight = scale_weight.unsqueeze(1).unsqueeze(1).repeat(1, T, N, 1)
         res = torch.sum(res * scale_weight, -1)
